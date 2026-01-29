@@ -31,13 +31,32 @@ export default api;
 export  async function getCookies(){
   const cookieStore = await cookies();
   //const cookieString = cookieStore.toString();
-  const sessionToken = cookieStore.get('next-auth.session-token');
-  if (sessionToken) {
+  const env = process.env.NEXT_PUBLIC_NODE_ENV
+ // let sessionToken  =  {  };
+  if(env == "development"){
+   const  sessionToken = cookieStore.get('next-auth.session-token');
 
-    return sessionToken.value;
-   // console.log(sessionToken.value);
-    // headers.append("Cookie", `next-auth.session-token=${sessionToken}`);
+    if (sessionToken) {
+
+      return sessionToken.value;
+      // console.log(sessionToken.value);
+      // headers.append("Cookie", `next-auth.session-token=${sessionToken}`);
+    }
+
   }
+  else if (env == "production"){
+    const sessionToken = cookieStore.get('__Secure-next-auth.session-token');
+
+    if (sessionToken) {
+
+      return sessionToken.value;
+      // console.log(sessionToken.value);
+      // headers.append("Cookie", `next-auth.session-token=${sessionToken}`);
+    }
+
+  }
+
+
 }
 
 export  async function apiRequest(){
